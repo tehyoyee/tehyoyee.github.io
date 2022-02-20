@@ -102,9 +102,9 @@ analytics:
 
 # Site Author
 author:
-  name             : "Taehyeong Kim\n\n___"
+  name             : "Taehyeong Kim"
   avatar           : # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
-  bio              : "**42Seoul**\n\n**Kwangwoon Univ.**  "
+  bio              : "\n\n___\n\n42Seoul\n\nKwangwoon Univ.  "
   location         : "Seoul, Korea"
   email            : "tehyoyee@gmail.com"
   links:
