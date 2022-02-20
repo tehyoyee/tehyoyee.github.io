@@ -18,7 +18,7 @@ minimal_mistakes_skin    : "neon" # "air", "aqua", "contrast", "dark", "dirt", "
 locale                   : "ko-KR"
 title                    : "Taehyeong"
 title_separator          : "|"
-subtitle                 : "42 Seoul"
+subtitle                 : # "42 Seoul"
 name                     : "Taehyeong Kim"
 description              : # ""
 url                      : "https://tehyoyee.github.io"
@@ -104,7 +104,7 @@ analytics:
 author:
   name             : "Taehyeong Kim"
   avatar           : # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
-  bio              : "Student of **42Seoul**"
+  bio              : "work in **42Seoul**"
   location         : "Seoul, Korea"
   email            : "tehyoyee@gmail.com"
   links:
