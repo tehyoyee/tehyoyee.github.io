@@ -2,7 +2,7 @@
 layout: single
 title: "File Discriptor"
 categories: Linux
-tag: Ma
+tag: read, open, fcntl, file descriptor, open_max 
 toc: true
 author_profile: false
 sidebar:
