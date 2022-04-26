@@ -1,6 +1,6 @@
 ---
 layout: single
-title: "File Discriptor"
+title: "File Descriptor"
 categories: Linux
 tag: read, open, fcntl, file descriptor, open_max 
 toc: true
