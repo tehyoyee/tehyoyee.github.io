@@ -42,7 +42,7 @@ int open (const char *FILENAME, int FLAGS[, mode_t MODE];
 **OPTION**
 
 |FLAGS|Desciption|
-|--|--|
+|:-|:-|
 |O_RDONLY|읽기전용|
 |O_WRONLY|쓰기전용|
 |O_RDWR|읽기쓰기전용|
