@@ -1,6 +1,6 @@
 ---
 layout: single
-title: "Makefile 사용법"
+title: "String 주요 메소드"
 categories: java
 tag: java
 toc: true
@@ -11,8 +11,8 @@ sidebar:
 
 <br>
 <br>
-ja
-## String 주요 메소드
+
+
 <br>
 
 |Method|Description|
