@@ -2,7 +2,7 @@
 layout: single
 title: "born2beroot"
 categories: linux
-tag: debian, linux, virtual box
+tag: debian, linux, virtual box, lvm, ssh, appArmor
 toc: true
 author_profile: false
 sidebar:
@@ -10,7 +10,6 @@ sidebar:
 ---
 
 ## 데비안 (Debian)
-<br>
 
 - 오픈소스 소프트웨어
 - 데비안 GNU/리눅스 GNU/허드 GNU/NetBSD 등 있다.
@@ -55,24 +54,81 @@ sidebar:
 은행같은 보안은 RHEL을 선호. <br>
 한국어 지원이 미비하다.
 
+<br><br>
+___
+
 ## Virtual Machine
 
-가상머신은 위험한 작업을 수행하기 용이. <br>
+> 가상머신은 위험한 작업을 수행하기 용이. <br>
 바이러스에 감염된 데이터에 엑세스하고 운영체제를 테스트할 수 있다.
-가상 머신은 sandbox화되므로 가상머신내의 소프트웨어가 호스트 컴퓨터에 접근할 수 없다.
-<br>
+가상 머신은 sandbox화되므로 가상머신내의 소프트웨어가 호스트 컴퓨터에 접근할 수 없다.<br>
+
  - 하나의 컴퓨터에서 여러 운영 체제 환경을 실행할 수 있다.
  - 유지 및 관리 측면에서 효율적이다.
 
 <br>
 <br>
+___
 
 ## Apt vs Aptitude
 
 > 소프트웨어의 설치, 제거, 업데이트를 관리해주는 툴. <br>
+오픈소스 소프트웨어이고 데비안을 위해 고안되었다.
 
-### Apt (Advanced Packaging Tool)
+### Apt
 
-- 오픈소스 소프트웨어
-- 설치 및 삭제의 역할 (데비안을 위해 고안됨)
+- low-level package manager
 - CLI
+- 패키지 삭제시 사용되지않은 패키지를 삭제하려면 apt-get에서 `-auto-remove` 옵션이나 `apt-get autoremove`가 명시되어야한다
+
+### Aptitude
+
+- high-level interactive package manager
+- Apt가 CLI인 반면에 UI가 제공된다
+- why, why-not 커맨드로 특정 기능이 안되는 이유를 알려준다
+- 패키지 삭제시 사용되지않은 패키지도 함께 삭제해준다
+
+<br><br>
+___
+
+## AppArmor (Application Armor)
+
+- 시스템관리자가 프로그램 프로필별 역량을 제한해주는 리눅스 커널 보안 모듈
+- 리눅스 보안 모듈(LSM)에 의해 구현
+- 강제적 접근 통제(MAC)를 제공하며 DAC또한 제공
+
+<br>
+
+### MAC (Mandatory Access Control)
+> MAC는 관리자만이 사용자에게 자원에 대한 권한을 부여받는다. 관리자만이 객체에 대한 보안등급과 사용자의 보안등급을 관리할 수 있다. <br>
+
+### DAC (Discretionary Access Control)
+> DAC는 자원에 대한 접근권한을 사용자에 기반한다. 사용자나 그룹이 객체의 소유자일 때, 다른 사용자나 그룹에게 권한을 부여할 수 있다. 자원에 대한 소유권을 기반으로 작동<br>
+
+### RABC (Role Based Access Control)
+> 관리자가 사용자의 맡은 역할에 기반하여 권한을 부여한다.<br>
+
+<br><br>
+___
+
+## LVM (Logical Volume Manager)
+
+리눅스의 저장 공간을 효율적으로 관리하기위한 방법.
+
+> 기존의 방식에서는 리눅스 내부의 하나의 디스크를 여러 파티션으로 나누어 각각의 디렉토리에 마운트한다. LVM에서는 파티션대신 볼륨의 개념으로 저장 공간을 관리한다. 물리적인 공간을 수정할 필요없이 각각의 파티션들에 대한 짜투리 공간을 묶어 사용할 수 있다. 또한, 하나의 파티션을 여러 볼륨으로 나누어 사용할 수 있다.
+
+<br><br>
+
+### PV, PE, VG, LV, LE
+
+> PV(Physical Volume)은 디스크의 물리적공간을 나타내고 PE(Physical Extent)는 그 안의 단위를 나타낸다 (4mb). 여러 PE에서 공간을 다시 만들어낸 것이 VG(Volume Group)이 되고, 이것은 필요에 따라 LV(Logical Volume)으로 나누어진다. LV의 내부 단위는 LE(Logical Extent). <br>
+
+<br><br>
+
+## SSH (Secure SHell)
+
+네트워크 프로토콜중 하나로 호스트에 통신하기위해 사용되는 인터넷 프로토콜이다. 기존 유닉스시스템에서 사용하던 텔넷에 암호화기능을 추가하여 나온 프로토콜이다. 기본적으로 CLI에서 작업을 한다. 기본포트는 22.
+
+### SSH Key
+
+> 클라이언트는 Private Key와 Public Key를 생성한다. 통신하고자 하는 컴퓨터에 Public key를 저장하고 이는 암호화에 사용된다. 클라이언트는 접속요청을 받고 부여받은 public key가 private와 한쌍인지 확인한다. private key는 복호화에 사용된다. 
