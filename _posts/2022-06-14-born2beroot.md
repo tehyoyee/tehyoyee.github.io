@@ -149,6 +149,7 @@ ufw enable
 ufw default deny    //incoming deny
 ufw allow 4242         //ssh연결허용
 ufw status verbose
+ufw delete <규칙 번호>		// port 삭제
 ```
 
 <br><br><br>
@@ -164,17 +165,19 @@ ufw status verbose
 ```
 apt search openssh-server       // 설치 확인
 apt install openssh-server
-vim /etc/ssh/sshd_config 
+vim /etc/ssh/sshd_config 		// server측 설정  client는 ssh_config
 #Port 22 -> Port 4242 로 변경
-#PermitRootLogin prohibit-password -> PermitRootLogin no 로 변경
+#PermitRootLogin prohibit-password -> PermitRootLogin no 로 변경	//root의 ssh 접근 제한
 systemctl restart ssh 
 systemctl status ssh        // ssh 실행여부 & port 확인
+
+ssh <username>@<MAC_IP> -p <host port>
 ```
 
 <br><br>
 <br><br>
 
-## sudo
+## sudo, user, group
 
 sudo를 사용하여 사용자는 root의 권한을 이용할 수 있다. root의 비밀번호를 모르는 상태에서 관리권한을 부여할 수 있기 때문에 안전을 위하여 sudo를 사용.<br>
 
@@ -183,6 +186,15 @@ apt-get update
 apt-get install sudo
 dpkg -l sudo    // sudo 설치여부
 visudo          // sudoer 파일 접근
+
+id <user>		// user의 그룹 확인
+passwd <user>	// user의 비밀번호 변경
+
+groupadd <group>		// 그룹 추가
+groupdel <group>		// 그룹 삭제
+usermod -aG <group> <user>	// 사용자를 그룹에 추가
+id <user>		// 사용자의 그룹확인
+chage -L <user>		// 사용자의 비밀번호확인
 ```
 
 <br><br><br>
@@ -190,7 +202,22 @@ visudo          // sudoer 파일 접근
 ## cron
 
 유닉스 계열 기반 운영체제의 시간 기반 잡스케줄러이다. crontab 파일들에 규정된 명령어들을 기반으로 일정시간에 셸 명령어를 실행할 수 있다.<br>
-http://www.cronmaker.com/
+http://www.cronmaker.com/<br>
+
+```
+* * * * * command	// * * * * * <=> m,h,d,m,w
+- : 그 사이 값
+, : 지정 값
+/ : 특정 주기로 나누기
+이용 가능.
+ex ) /10 * * * * bash ~/monitoring.sh | wall		// 10분 단위
+ex ) /1 * * * * bast ~/monitoring.sh | wall
+	/1 * * * * sleep; bash ~/monitoring.sh | wall		// 30초 단위
+```
+```
+systemctl status cron.service
+
+```
 
 <br><br><br>
 
