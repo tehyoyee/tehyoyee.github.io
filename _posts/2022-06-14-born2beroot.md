@@ -101,17 +101,23 @@ ___
 - 리눅스 보안 모듈(LSM)에 의해 구현
 - 강제적 접근 통제(MAC)를 제공하며 DAC또한 제공
 
+```
+dpkg -l apparmor
+apt install apparmor
+apt install apparmor-utils
+```
+
 <br>
 
-#### MAC (Mandatory Access Control)
+### MAC (Mandatory Access Control)
 
 > MAC는 관리자만이 사용자에게 자원에 대한 권한을 부여받는다. 관리자만이 객체에 대한 보안등급과 사용자의 보안등급을 관리할 수 있다. <br>
 
-#### DAC (Discretionary Access Control)
+### DAC (Discretionary Access Control)
 
 > DAC는 자원에 대한 접근권한을 사용자에 기반한다. 사용자나 그룹이 객체의 소유자일 때, 다른 사용자나 그룹에게 권한을 부여할 수 있다. 자원에 대한 소유권을 기반으로 작동<br>
 
-#### RABC (Role Based Access Control)
+### RABC (Role Based Access Control)
 
 > 관리자가 사용자의 맡은 역할에 기반하여 권한을 부여한다.<br>
 
@@ -122,11 +128,9 @@ ___
 
 리눅스의 저장 공간을 효율적으로 관리하기위한 방법.
 
-> 기존의 방식에서는 리눅스 내부의 하나의 디스크를 여러 파티션으로 나누어 각각의 디렉토리에 마운트한다. LVM에서는 파티션대신 볼륨의 개념으로 저장 공간을 관리한다. 물리적인 공간을 수정할 필요없이 각각의 파티션들에 대한 짜투리 공간을 묶어 사용할 수 있다. 또한, 하나의 파티션을 여러 볼륨으로 나누어 사용할 수 있다.
+> 기존의 방식에서는 리눅스 내부의 하나의 디스크를 여러 파티션으로 나누어 각각의 디렉토리에 마운트한다. LVM에서는 파티션대신 볼륨의 개념으로 저장 공간을 관리한다. 물리적인 공간을 수정할 필요없이 각각의 파티션들에 대한 짜투리 공간을 묶어 사용할 수 있다. 또한, 하나의 파티션을 여러 볼륨으로 나누어 사용할 수 있다.<br>
 
-<br><br>
-
-#### PV, PE, VG, LV, LE
+### PV, PE, VG, LV, LE
 
 > PV(Physical Volume)은 디스크의 물리적공간을 나타내고 PE(Physical Extent)는 그 안의 단위를 나타낸다 (4mb). 여러 PE에서 공간을 다시 만들어낸 것이 VG(Volume Group)이 되고, 이것은 필요에 따라 LV(Logical Volume)으로 나누어진다. LV의 내부 단위는 LE(Logical Extent). <br>
 
@@ -135,7 +139,17 @@ ___
 
 
 ## UFW (Uncomplicate Firewall)
+
 다양한 리눅스환경에서 사용되는 방화벽관리 프로그램으로 명령어와 사용법이 간단한 것이 특징. 
+
+```
+apt-get install ufw -y 
+ufw status verbose 
+ufw enable
+ufw default deny    //incoming deny
+ufw allow 4242         //ssh연결허용
+ufw status verbose
+```
 
 <br><br><br>
 
@@ -143,17 +157,33 @@ ___
 
 네트워크 프로토콜중 하나로 호스트에 통신하기위해 사용되는 인터넷 프로토콜이다. 기존 유닉스시스템에서 사용하던 텔넷에 암호화기능을 추가하여 나온 프로토콜이다. 기본적으로 CLI에서 작업을 한다. 기본포트는 22.
 
-#### SSH Key
+### SSH Key
 
-> 클라이언트는 Private Key와 Public Key를 생성한다. 통신하고자 하는 컴퓨터에 Public key를 저장하고 이는 암호화에 사용된다. 클라이언트는 접속요청을 받고 부여받은 public key가 private와 한쌍인지 확인한다. private key는 복호화에 사용된다. 
+> 클라이언트는 Private Key와 Public Key를 생성한다. 통신하고자 하는 컴퓨터에 Public key를 저장하고 이는 암호화에 사용된다. 클라이언트는 접속요청을 받고 부여받은 public key가 private와 한쌍인지 확인한다. private key는 복호화에 사용된다. <br>
+
+```
+apt search openssh-server       // 설치 확인
+apt install openssh-server
+vim /etc/ssh/sshd_config 
+#Port 22 -> Port 4242 로 변경
+#PermitRootLogin prohibit-password -> PermitRootLogin no 로 변경
+systemctl restart ssh 
+systemctl status ssh        // ssh 실행여부 & port 확인
+```
 
 <br><br>
 <br><br>
 
 ## sudo
 
-sudo를 사용하여 사용자는 root의 권한을 이용할 수 있다. root의 비밀번호를 모르는 상태에서 관리권한을 부여할 수 있기 때문에 안전을 위하여 sudo를 사용.
+sudo를 사용하여 사용자는 root의 권한을 이용할 수 있다. root의 비밀번호를 모르는 상태에서 관리권한을 부여할 수 있기 때문에 안전을 위하여 sudo를 사용.<br>
 
+```
+apt-get update
+apt-get install sudo
+dpkg -l sudo    // sudo 설치여부
+visudo          // sudoer 파일 접근
+```
 
 <br><br><br>
 
@@ -164,3 +194,32 @@ http://www.cronmaker.com/
 
 <br><br><br>
 
+## 비밀번호 정책 설정
+```
+vim /etc/login.defs
+PASS_MAX_DAYS   30      // 패스워드 만료 30일
+PASS_MIN_DATS   2       // 2일이후 패스워드 변경 가능
+PASS_WARN_AGE   7       // 패스워드 만료 7일전 경고
+```
+```
+apt-get -y install libpam-quality   // 패스워드 규칙 모듈
+vim /etc/pam.d/common-password
+password    requisite   pam-pwquality.so retry=3 minlen=10 ucredit=-1 lcredit=-1 dcredit=-1 maxrepeat=3 reject_username enforce_for_root difok=7
+retry       최대 입력 횟수
+minlen      최소길이
+ucredit     대문자 갯수
+lcredit     소문자 갯수
+dcredit     숫자 갯수
+maxrepeat   연속된 같은 문자 제한
+reject_username     username 제한
+enforce_for_root    root에게도 적용
+difok       기존패스워드와 달라야하는 문자수
+```
+
+## hostname 변경
+
+```
+hostnamectl     //hostname 확인
+hostnamectl set-hostname <hostname>     //hostname 변경
+
+```
