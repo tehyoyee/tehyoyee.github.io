@@ -9,6 +9,10 @@ sidebar:
  nav: "docs"
 ---
 
+
+
+
+
 ## 데비안 (Debian)
 
 - 오픈소스 소프트웨어
@@ -89,7 +93,7 @@ ___
 - 패키지 삭제시 사용되지않은 패키지도 함께 삭제해준다
 
 <br><br>
-___
+<br>
 
 ## AppArmor (Application Armor)
 
@@ -99,17 +103,20 @@ ___
 
 <br>
 
-### MAC (Mandatory Access Control)
+#### MAC (Mandatory Access Control)
+
 > MAC는 관리자만이 사용자에게 자원에 대한 권한을 부여받는다. 관리자만이 객체에 대한 보안등급과 사용자의 보안등급을 관리할 수 있다. <br>
 
-### DAC (Discretionary Access Control)
+#### DAC (Discretionary Access Control)
+
 > DAC는 자원에 대한 접근권한을 사용자에 기반한다. 사용자나 그룹이 객체의 소유자일 때, 다른 사용자나 그룹에게 권한을 부여할 수 있다. 자원에 대한 소유권을 기반으로 작동<br>
 
-### RABC (Role Based Access Control)
+#### RABC (Role Based Access Control)
+
 > 관리자가 사용자의 맡은 역할에 기반하여 권한을 부여한다.<br>
 
 <br><br>
-___
+<br>
 
 ## LVM (Logical Volume Manager)
 
@@ -119,16 +126,41 @@ ___
 
 <br><br>
 
-### PV, PE, VG, LV, LE
+#### PV, PE, VG, LV, LE
 
 > PV(Physical Volume)은 디스크의 물리적공간을 나타내고 PE(Physical Extent)는 그 안의 단위를 나타낸다 (4mb). 여러 PE에서 공간을 다시 만들어낸 것이 VG(Volume Group)이 되고, 이것은 필요에 따라 LV(Logical Volume)으로 나누어진다. LV의 내부 단위는 LE(Logical Extent). <br>
 
 <br><br>
+<br>
+
+
+## UFW (Uncomplicate Firewall)
+다양한 리눅스환경에서 사용되는 방화벽관리 프로그램으로 명령어와 사용법이 간단한 것이 특징. 
+
+<br><br><br>
 
 ## SSH (Secure SHell)
 
 네트워크 프로토콜중 하나로 호스트에 통신하기위해 사용되는 인터넷 프로토콜이다. 기존 유닉스시스템에서 사용하던 텔넷에 암호화기능을 추가하여 나온 프로토콜이다. 기본적으로 CLI에서 작업을 한다. 기본포트는 22.
 
-### SSH Key
+#### SSH Key
 
 > 클라이언트는 Private Key와 Public Key를 생성한다. 통신하고자 하는 컴퓨터에 Public key를 저장하고 이는 암호화에 사용된다. 클라이언트는 접속요청을 받고 부여받은 public key가 private와 한쌍인지 확인한다. private key는 복호화에 사용된다. 
+
+<br><br>
+<br><br>
+
+## sudo
+
+sudo를 사용하여 사용자는 root의 권한을 이용할 수 있다. root의 비밀번호를 모르는 상태에서 관리권한을 부여할 수 있기 때문에 안전을 위하여 sudo를 사용.
+
+
+<br><br><br>
+
+## cron
+
+유닉스 계열 기반 운영체제의 시간 기반 잡스케줄러이다. crontab 파일들에 규정된 명령어들을 기반으로 일정시간에 셸 명령어를 실행할 수 있다.<br>
+http://www.cronmaker.com/
+
+<br><br><br>
+
