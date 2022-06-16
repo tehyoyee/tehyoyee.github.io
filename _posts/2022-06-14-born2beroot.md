@@ -189,6 +189,7 @@ visudo          // sudoer 파일 접근
 
 id <user>		// user의 그룹 확인
 passwd <user>	// user의 비밀번호 변경
+useradd <user>	// user 생성
 
 groupadd <group>		// 그룹 추가
 groupdel <group>		// 그룹 삭제
