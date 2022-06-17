@@ -63,12 +63,12 @@ ___
 
 ## Virtual Machine
 
-> 가상머신은 위험한 작업을 수행하기 용이. <br>
-바이러스에 감염된 데이터에 엑세스하고 운영체제를 테스트할 수 있다.
-가상 머신은 sandbox화되므로 가상머신내의 소프트웨어가 호스트 컴퓨터에 접근할 수 없다.<br>
-
- - 하나의 컴퓨터에서 여러 운영 체제 환경을 실행할 수 있다.
- - 유지 및 관리 측면에서 효율적이다.
+- 호스트os위에 하이퍼바이저라는 가상머신을 생성하고 실행하는 프로세스가 있다. 호스트의 메모리 및 리소스를 가상으로 공유하여 여러 게스트 가상머신을 지원한다. <br>
+- 가상머신은 위험한 작업을 수행하기 용이. <br>
+- 바이러스에 감염된 데이터에 엑세스하고 운영체제를 테스트할 수 있다.
+- 가상 머신은 sandbox화되므로 가상머신내의 소프트웨어가 호스트 컴퓨터에 접근할 수 없다.<br>
+- 하나의 컴퓨터에서 여러 운영 체제 환경을 실행할 수 있다.
+- 유지 및 관리 측면에서 효율적이다.
 
 <br>
 <br>
@@ -105,6 +105,7 @@ ___
 dpkg -l apparmor
 apt install apparmor
 apt install apparmor-utils
+aa-enabled		// appArmor 활성화 확인
 ```
 
 <br>
@@ -129,6 +130,10 @@ apt install apparmor-utils
 리눅스의 저장 공간을 효율적으로 관리하기위한 방법.
 
 > 기존의 방식에서는 리눅스 내부의 하나의 디스크를 여러 파티션으로 나누어 각각의 디렉토리에 마운트한다. LVM에서는 파티션대신 볼륨의 개념으로 저장 공간을 관리한다. 물리적인 공간을 수정할 필요없이 각각의 파티션들에 대한 짜투리 공간을 묶어 사용할 수 있다. 또한, 하나의 파티션을 여러 볼륨으로 나누어 사용할 수 있다.<br>
+
+```
+lsblk		// 확인
+```
 
 ### PV, PE, VG, LV, LE
 
@@ -216,9 +221,41 @@ ex ) /1 * * * * bast ~/monitoring.sh | wall
 	/1 * * * * sleep; bash ~/monitoring.sh | wall		// 30초 단위
 ```
 ```
-systemctl status cron.service
-
+systemctl status cron
+systemctl enable cron
+systemctl disable cron		//재부팅후 멈추기
+crontab -e
+service cron restart
+service cron stop
+service cron start
 ```
+```
+#!/bin/bash
+
+echo -ne "#Architecture: "; uname -a
+echo -ne "#CPU physical : "; grep -c ^processor /proc/cpuinfo
+echo -ne "#vCPU : "; cat /proc/cpuinfo | grep processor | wc -l
+echo -ne "#Memory Usage: "; free -m | awk 'NR==2{printf "%s/%sMB (%.2f%%)\n", $3,$2,$3*100/$2 }'
+echo -ne "#Disk Usage: "; df -h | awk '$NF=="/"{printf "%d/%dGB (%s)\n", $3,$2,$5}'
+echo -ne "#CPU load: "; top -bn1 | grep load | awk '{printf "%.2f%%\n", $(NF-2)}'
+echo -ne "#Last boot: "; who | awk '{print $3}' | tr '\n' ' ' && who | awk '{print $4}'
+echo -ne "#LVM use: "; if cat /etc/fstab | grep -q "/dev/mapper/"; then echo "yes"; else echo "no"; fi
+echo -ne "#Connexions TCP : "; cat /proc/net/tcp | wc -l | awk '{print $1-1}' | tr '\n' ' ' && echo "ESTABLISHED"
+echo -ne "#User log : "; w | wc -l | awk '{print$1-2}'
+echo -ne "#Network : "; echo -n "IP " && ip route list | grep link | awk '{print $9}' | tr '\n' ' ' && echo -n "(" && ip link show | grep link/ether | awk '{print $2}' | tr '\n' ')' && printf "\n"
+echo -ne "#Sudo : "; journalctl | grep 'sudo' | grep 'sudo' | grep 'COMMAND' | wc -l | tr '\n' ' ' && echo "cmd"
+printf "\n"
+```
+```
+awk '{print $1}' file  // 1번째 필드
+awk 'NR>=2' file // 2,3,4
+^				// 문자열 처음
+tr -d 			// 삭제
+wc    			// 라인갯수
+printf  		// 개행없음
+echo    줄바꿈함   -n 개행x  -e 백슬래시이스케이프 해석 활성화
+```
+
 
 <br><br><br>
 
@@ -230,7 +267,7 @@ PASS_MIN_DATS   2       // 2일이후 패스워드 변경 가능
 PASS_WARN_AGE   7       // 패스워드 만료 7일전 경고
 ```
 ```
-apt-get -y install libpam-quality   // 패스워드 규칙 모듈
+apt-get -y install libpam-pwquality   // 패스워드 규칙 모듈
 vim /etc/pam.d/common-password
 password    requisite   pam-pwquality.so retry=3 minlen=10 ucredit=-1 lcredit=-1 dcredit=-1 maxrepeat=3 reject_username enforce_for_root difok=7
 retry       최대 입력 횟수
