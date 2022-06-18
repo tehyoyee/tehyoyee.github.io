@@ -33,6 +33,7 @@ sidebar:
 
 ```
 lsb_release -a
+head -n 2 /etc/os-release
 ```
 
 
@@ -64,7 +65,7 @@ lsb_release -a
 한국어 지원이 미비하다.
 
 <br><br>
-___
+<br><br>
 
 ## Virtual Machine
 
@@ -75,9 +76,8 @@ ___
 - 하나의 컴퓨터에서 여러 운영 체제 환경을 실행할 수 있다.
 - 유지 및 관리 측면에서 효율적이다.
 
-<br>
-<br>
-___
+<br><br>
+<br><br>
 
 ## Apt vs Aptitude
 
@@ -98,7 +98,7 @@ ___
 - 패키지 삭제시 사용되지않은 패키지도 함께 삭제해준다
 
 <br><br>
-<br>
+<br><br>
 
 ## AppArmor (Application Armor)
 
@@ -111,9 +111,8 @@ dpkg -l apparmor
 apt install apparmor
 apt install apparmor-utils
 aa-enabled		// appArmor 활성화 확인
+aa-status
 ```
-
-<br>
 
 ### MAC (Mandatory Access Control)
 
@@ -128,7 +127,7 @@ aa-enabled		// appArmor 활성화 확인
 > 관리자가 사용자의 맡은 역할에 기반하여 권한을 부여한다.<br>
 
 <br><br>
-<br>
+<br><br>
 
 ## LVM (Logical Volume Manager)
 
@@ -155,9 +154,11 @@ lsblk		// 확인
 ```
 apt-get install ufw -y 
 ufw status verbose 
+ufw -version
 ufw enable
 ufw default deny    //incoming deny
 ufw allow 4242         //ssh연결허용
+ufw deny 4242
 ufw status verbose
 ufw delete <규칙 번호>		// port 삭제
 ```
@@ -180,10 +181,14 @@ vim /etc/ssh/sshd_config 		// server측 설정  client는 ssh_config
 #PermitRootLogin prohibit-password -> PermitRootLogin no 로 변경	//root의 ssh 접근 제한
 systemctl restart ssh 
 systemctl status ssh        // ssh 실행여부 & port 확인
-
+lsof -i -P -n
+ss -tunlp
 ssh <username>@<MAC_IP> -p <host port>
 ```
-
+sshd는 ssh daemon이다. ssh연결을 받기전 백그라운드에서 요청을 기다리고 있다. <br>
+ssh_config : outbound <br>
+sshd_config : inbound<br>
+네트워크 데몬 운영체제가 제대로 실행되기위해서 백그라운드에서 시스템을 관리, 유지하는 역할.
 <br><br>
 <br><br>
 
@@ -209,6 +214,21 @@ usermod -aG <group> <user>	// 사용자를 그룹에 추가
 id <user>		// 사용자의 그룹확인
 chage -L <user>		// 사용자의 비밀번호확인
 ```
+
+### sudoer.tmp setting
+
+```
+visudo
+
+Defaults	authfail_message="원하는 에러메세지" #권한 획득 실패 시 출력 (sudo 인증 실패 시)
+Defaults	badpass_message="원하는 에러메세지" #sudo인증에서 비밀번호 틀리면 출력
+Defaults	log_input #sudo명령어 실행 시 입력된 명령어 log로 저장
+Defaults	log_output #sudo명령어 실행 시 출력 결과를 log로 저장
+Defaults	requiretty #sudo명령어 실행 시 tty강제
+Defaults	iolog_dir="/var/log/sudo/" #sudo log 저장 디렉토리 설정
+Defaults	passwd_tries=3 #sudo실행 횟수를 지정. default가 3​
+```
+requiretty : tty터미널이 아닌 cron같은 곳에서 sudo 를 사용할 때 보안상의 이유로 이를 노거절하는 옵션
 
 <br><br><br>
 
@@ -287,6 +307,8 @@ reject_username     username 제한
 enforce_for_root    root에게도 적용
 difok       기존패스워드와 달라야하는 문자수
 ```
+
+<br><br><br><br>
 
 ## hostname 변경
 
