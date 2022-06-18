@@ -31,6 +31,11 @@ sidebar:
 
 - 데비안은 51000여 꾸러미를 갖춘 저장소를 관리한다.
 
+```
+lsb_release -a
+```
+
+
 기능 : 저장소. <br>
 안정 : 안정성 검증을 마친 꾸러미를 저장하는 곳. 처음하는 사람에게 적합.<br>
 백포트 : 일부 소프트웨어의 안정판보다 더 최신 판을 제공.  특정 소프트웨어의 최신 판을 원하는 사용자를 위함. <br>
@@ -196,6 +201,8 @@ id <user>		// user의 그룹 확인
 passwd <user>	// user의 비밀번호 변경
 useradd <user>	// user 생성
 
+groups
+groups -n a b			// 그룹명 변경 a->b
 groupadd <group>		// 그룹 추가
 groupdel <group>		// 그룹 삭제
 usermod -aG <group> <user>	// 사용자를 그룹에 추가
