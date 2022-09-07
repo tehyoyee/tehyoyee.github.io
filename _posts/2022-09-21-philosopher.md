@@ -138,3 +138,11 @@ int pthread_mutex_destroy(pthread_mutex_t *mutex);
 int pthread_detach(pthread_t thread);
     인자 thread를 커널에서 분리 시킨다. 분리된 스레드는 수행을 종료 시키고, 할당된 자원을 회수한다.
 ```
+
+### compile flags
+```c
+gcc -fsanitize=thread
+```
+
+플래그를 사용하면 쓰레드간의 임계구역 침범이 있는지 확인해준다.<br>
+플래그를 사용하면 mutex를 적절하게 사용하였는지 알 수 있다.<br>
