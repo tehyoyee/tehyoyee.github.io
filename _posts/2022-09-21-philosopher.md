@@ -1,6 +1,6 @@
 ---
 layout: single
-title: "[42 Seoul] philosopher"
+title: "[42 Seoul] philosophers"
 categories: Linux
 tag: 42seoul, Linux, shell
 toc: true
@@ -11,6 +11,41 @@ sidebar:
 
 
 <br><br><br>
+
+### gettimeofday
+```c
+#include <sys/time.h>
+#include <unistd.h>
+
+
+
+struct timeval mytime;	//	timeval 인스턴스를 생성하고 사용한다.
+```
+
+```c
+int gettimeofday(struct timeval *tv, struct timezone *tz);
+int settimeofday(const struct timeval *tv ,  const  struct
+             timezone *tz);
+```
+```c
+struct timeval
+{
+    long tv_sec;       // sec
+    long tv_usec;      // micro sec
+}
+```
+```c
+struct timezone
+{
+    int tz_minuteswest:  // 그리니치 서측분차  
+    int tz_dsttime       // DST 보정타입(일광 절약시간)
+}
+```
+<br>
+<br>
+<br>
+
+## Thread
 
 ```c
 #include <pthread.h>
@@ -146,3 +181,68 @@ gcc -fsanitize=thread
 
 플래그를 사용하면 쓰레드간의 임계구역 침범이 있는지 확인해준다.<br>
 플래그를 사용하면 mutex를 적절하게 사용하였는지 알 수 있다.<br>
+<br>
+
+## Semaphore
+
+semaphore는 멀티프로그래밍 환경에서 공유자원에 대한 접근을 제한하는 용도로 사용된다.<br>
+세마포어 S는 정수값을 가지는 변수이고, P와 V의 명렁에 의해서만 접근할 수 있다.<br>
+<br>
+공유자원의 상태를 카운터로 나타낸다.<br>
+세마포어 변수가 1이상이면 사용가능.<br>
+lock의 경우 0 또는 1이지만, semaphore는 shared data의 갯수를 지칭한다.<br>
+sem_wait() 변수에 -1<br>
+sem_signal() 변수에 +1<br>
+<br>
+semaphore는 mutex역할을 할 수 있지만,<br>
+mutex는 semaphore의 역할을 할 수 없다.<br>
+<br>
+semaphore는 소유하지않은 thread에서 해제 가능.<br>
+mutex는 소유한 thread만 해제 가능.<br>
+
+<br><br>
+
+### semopen
+
+```c
+#include <semaphore.h>
+### sem_t *sem_open(const char *name, int oflag, [mode_t mode], [unsigned int value]);
+
+*name : 세마포어 이름
+oflag : O_CREAT : 세마포어 생성.
+mode : 접근 권한 기본 0644
+value : 초깃값
+```
+<br>
+
+### sem_wait
+
+```c
+#include <semaphore.h>
+int sem_wait(sem_t *sem);
+```
+
+P()기능에 해당. s-- 처리하고, 자원이 없다면 대기.
+
+### sem_post
+
+```c
+#include <semaphore.h>
+int sem_post(sem_t *sem);
+```
+V()기능에 해당. s++ 처리하고, 자원 반납.
+
+### sem_unlink
+
+```c
+#include <semaphore.h>
+int sem_unlink(const char *name);
+```
+세마포어 삭제. 성공시 0 return, 실패시 -1.
+
+### sem_close
+
+```c
+#include <semaphore.h>
+int sem_close(sem_t *sem);
+```
