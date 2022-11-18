@@ -191,3 +191,19 @@ NAT으로 할당받은 주소와 포트 넘버로 호스트에 접근한다.<br>
 #### level 5
 장치에 가까운 라우터에 네트워크 주소를 일치시킨다.
 라우터테이블은 정적라우팅. : destination -> next hop (conneted router) 로 이해하면 된다.
+
+### level 6
+Internet 라우팅 테이블의 destination: client A의 ip주소, next hop 은 interface R2
+client A 라우팅 테이블의 destination: internet의 ip주소, next hop 은 interface R1
+switch에 연결된 subnet은 같아야한다.
+interface R1 과 interface A1은 스위치로 연결되어있으므로 같은 network 주소를 갖는다.
+라우터의 next hop 은 interface R2와 같은 네트워크이므로 인터넷과 연결되어있다.
+
+### level 7
+주어는 네트워크의 수는 3개이므로 서브넷마스크 255.255.255.192 를 사용한다.
+ip주소를 마땅히 부여하고
+라우터 테이블을 채운다.
+
+
+###  level 8
+internet의 destination(네트워크주소)이 지정되어있으므로 그것에 맞게 interface C1 D1을 설정한다.
